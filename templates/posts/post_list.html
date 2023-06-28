@@ -1,0 +1,26 @@
+{%load humanize%}
+<html lang="en">
+
+<body>
+    <ul>
+        {%for post in post_list%}
+            <li>{{post.headline|title}}</li>
+            <span>{{post.pub_date|date:"Y-m-d"}}</span>
+            <br>
+            <span>{{post.pub_date|naturalday}}</span>
+            <br>
+            <span>rating: {{post.rating|apnumber}}</span>
+        {%endfor%}
+        <br>
+        <br>
+        {% for blog in  blog_list%}
+        <p>{{blog}}</p>
+        <img src="{{blog.image.url}}" alt="">
+        {%endfor%}
+        {{new_variable}}
+        <br>
+        hola
+
+    </ul>
+</body>
+</html>
