@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseNotFound
 import datetime
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.views.generic import ListView, DetailView
-from .models import Entry, Blog
+from .models import Post
 from .forms import BlogModelForm, BlogForm
 
 
@@ -16,8 +16,8 @@ def status_code_view(request, exception = None):
     return HttpResponseNotFound('<h1>404: Page not found</h1>')
 
 def entry_list(request):
-    entries = Entry.objects.all()
-    blog_list = Blog.objects.all()
+    entries = Post.objects.all()
+    blog_list = Post.objects.all()
     context = {
         'post_list': entries,
         'blog_list': blog_list
@@ -37,14 +37,14 @@ class EntryFormView(FormView):
         return super().form_valid(form)
 
 class EntryClassDetailView(DetailView):
-    model = Entry
+    model = Post
 
     def get_object(self):
         obj = super().get_object()
         return obj
 
 class EntryListView(ListView):
-    model = Entry
+    model = Post
     context_object_name = 'post_list'
     template_name = 'posts/post_list.html'
 
@@ -54,7 +54,7 @@ class EntryListView(ListView):
         return context
     
     def get_queryset(self):
-        return Entry.objects.all()[:1]
+        return Post.objects.all()[:1]
 
 def post_create(request):
     # form = BlogForm(request.POST or None)
