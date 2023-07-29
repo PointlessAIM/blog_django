@@ -15,17 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from posts.views import dummy_view, status_code_view
+from posts.views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", status_code_view, name="home"),
+    path('accounts/', include('allauth.urls')),
+    path("", PostListView.as_view(), name="list"),
+    path("<slug>/", PostDetailView.as_view(), name="detail"),
+    path("<slug>/update", PostUpdateView.as_view(), name="update"),
+    path("<slug>/delete", PostDeleteView.as_view(), name="delete"),
+    path("create/", PostCreateView.as_view(), name="create"),
     path('entries/', include('posts.urls', namespace='entries')),
 ]
-
-handler404 = 'posts.views.status_code_view'
 
 
 if settings.DEBUG: 

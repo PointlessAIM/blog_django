@@ -3,32 +3,30 @@ from django.http import HttpResponse, HttpResponseNotFound
 import datetime
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.views.generic import ListView, DetailView
-from .models import Post
+from .models import Post, PostView, Comment, Like, User
 from .forms import BlogModelForm, BlogForm
 
 
-def dummy_view(request):
-    now = datetime.datetime.now()
-    html = f"<html><body>time now: {now}, and id {id}</body></html>"
-    return HttpResponse(html)
+class PostListView(ListView):
+    model = Post
+    
+class PostDetailView(DetailView):
+    model = Post
 
-def status_code_view(request, exception = None):
-    return HttpResponseNotFound('<h1>404: Page not found</h1>')
+class PostCreateView(CreateView):
+    model = Post    
 
-def entry_list(request):
-    entries = Post.objects.all()
-    blog_list = Post.objects.all()
-    context = {
-        'post_list': entries,
-        'blog_list': blog_list
-    }
-    return render(request, 'posts/post_list.html', context) # request, template path, context
+class PostUpdateView(UpdateView):
+    model = Post
+    fields = ('title', 'content', 'thumbnail', 'author', 'slug')
 
-def redirect_home(request):
-    return redirect('entries:entry-detail', id=1) # you can also redirect directly to '/entries/1'
+class PostDeleteView(DeleteView):
+    model = Post
+    success_url='/'
+
 
 class EntryFormView(FormView):
-    template_name = 'form.html'
+    template_name = 'blog_form.html'
     form_class = BlogModelForm
     success_url = '/'
     
@@ -36,25 +34,7 @@ class EntryFormView(FormView):
         form.save()
         return super().form_valid(form)
 
-class EntryClassDetailView(DetailView):
-    model = Post
 
-    def get_object(self):
-        obj = super().get_object()
-        return obj
-
-class EntryListView(ListView):
-    model = Post
-    context_object_name = 'post_list'
-    template_name = 'posts/post_list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['new_variable'] = "buenos días por la noche"
-        return context
-    
-    def get_queryset(self):
-        return Post.objects.all()[:1]
 
 def post_create(request):
     # form = BlogForm(request.POST or None)

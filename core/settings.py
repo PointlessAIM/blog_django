@@ -38,6 +38,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
+    'django.contrib.sites',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 
     "users",
     "posts",
@@ -119,6 +124,17 @@ STATICFILES_DIRS = [Path.joinpath(BASE_DIR, "static")] # this is the directory w
 MEDIA_ROOT = Path.joinpath(BASE_DIR, "media_root") # this is the directory where media files will be collected to
 STATIC_ROOT = Path.joinpath(BASE_DIR, "static_root") # this is the directory where static files will be collected to
 
+AUTHENTICATION_BACKENDS = [
+    
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 1
+AUTH_USER_MODEL = 'posts.User'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
