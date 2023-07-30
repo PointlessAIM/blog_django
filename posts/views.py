@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound
 import datetime
@@ -10,15 +11,32 @@ from .forms import BlogModelForm, BlogForm
 class PostListView(ListView):
     model = Post
     
+    
 class PostDetailView(DetailView):
     model = Post
 
 class PostCreateView(CreateView):
-    model = Post    
-
-class PostUpdateView(UpdateView):
+    form_class = BlogModelForm
     model = Post
-    fields = ('title', 'content', 'thumbnail', 'author', 'slug')
+    success_url = '/'
+    def get_context_data(self, **kwargs: Any):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'view_type': 'Create'
+        })
+        return context
+class PostUpdateView(UpdateView):
+    form_class = BlogModelForm
+    model = Post
+    success_url = '/'
+
+
+    def get_context_data(self, **kwargs: Any):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'view_type': 'Update'
+        })
+        return context
 
 class PostDeleteView(DeleteView):
     model = Post

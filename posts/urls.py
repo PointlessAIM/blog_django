@@ -11,6 +11,10 @@ app_name='posts' # will throw an error if not included when using namespace in t
 
 urlpatterns = [ #/entries/
     path('',PostListView.as_view() , name='entry-list'),
+    path("create/", PostCreateView.as_view(), name="create"),
+    path("<slug>/", PostDetailView.as_view(), name="detail"),
+    path("<slug>/update", PostUpdateView.as_view(), name="update"),
+    path("<slug>/delete", PostDeleteView.as_view(), name="delete")
     
     
 ]
