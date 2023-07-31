@@ -5,13 +5,20 @@
     <div class="row">
         {%for object in object_list%}
             <div class="col-4">
-                <a href="#">
+                <a href="{{object.get_absolute_url}}">
                     <div class="card" style="width: 18rem;">
                         <img src="{{object.thumbnail.url}}" class="card-img-top" alt="...">
                         <div class="card-body">
                         <h5 class="card-title">{{object.title}}</h5>
                         <p class="card-text">{{object.content|truncatechars:10}}</p>
-                        
+                        <div>
+                            <span><i class="fas fa-thumbs-up ml-2"></i>{{object.get_view}}</span>
+                            <span><i class="fas fa-eye ml-2"></i>{{object.get_like}}</span>
+                            <span><i class="fas fa-comments ml-2"></i>{{object.get_comment}}</span>
+                        </div>
+                        <div class="card-text">
+                            published {{object.published_date|timesince}} ago
+                        </div>
                         </div>
                     
                     </div> 

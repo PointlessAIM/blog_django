@@ -1,13 +1,59 @@
 {%extends 'base.html'%}
-
+{%load crispy_forms_tags%}
 {%block content%}
-<br>
-hola
-<br>
-<div class="container">
-    {%for object in object_list%}
-    {{object.title}}
+<div class="row">
+    <div class="col-4 offset-4">
+        <div class="card" style="padding: 10px;">
+            <h1>{{object.title}}</h1>
+            <img src="{{object.thumbnail.url}}" class="card-img-top" alt="...">
+
+            <hr/>
+
+            <div>
+                <span><i class="fas fa-thumbs-up ml-2"></i>{{object.get_like}}</span>
+                <span><i class="fas fa-eye ml-2"></i>{{object.get_view}}</span>
+                <span><i class="fas fa-comments ml-2"></i>{{object.get_comment}}</span>
+            </div>
+
+            <hr/>
+
+            <div style="padding:10px;">
+                <p>{{object.content}}</p>
+            </div>
+
+            <hr/>
+
+            <div>
+                <h4>Enjoy this content? Give it a like</h4>
+
+                <a class="text-muted" href="{{object.get_like_url}}">
+                    <i class="fas fa-thumbs-up fa-lg"></i>
+                    {{object.get_like}}
+                </a>
+                <hr/>
+                {%if request.user.is_authenticated%}
+                    <h4>Leave a comment below</h4>
+                    <form method="POST">
+                        {%csrf_token%}
+                        {{form|crispy}}
+                        <button type="submit" class="btn btn-primary">comment</button>
+                    </form>
+                    <hr/>
+                    <h5>Comments</h5>
+                    {%for comment in object.comments.all %}
+                        <div class="card" style="padding: 10px;">
+                            <p>{{comment.content}}</p>
+                            <p>by {{comment.user}}</p>
+                            <p>{{comment.timestamp | timesince}} ago</p>
+                        </div>
+                    {%endfor%}
+                {%else%}
+                <a href="{%url 'account_login'%}" class="btn btn-primary btn-block">Login to comment</a>
+                {%endif%}
+            </div>
+        </div>
+        
+    </div>
     
-    {%endfor%}
 </div>
 {%endblock%}

@@ -1,10 +1,15 @@
 from django import forms
-from .models import Post
+from .models import Post, Comment
 
-class BlogForm(forms.Form):
-    name = forms.CharField(label="Enter blog name",max_length=100)
-    tagline = forms.CharField(widget=forms.Textarea)
 class BlogModelForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = "__all__"
+    
+class CommentForm(forms.ModelForm):
+    content = forms.CharField(required=True, widget=forms.Textarea(attrs={
+        'rows': 4
+    }))
+    class Meta:
+        model = Comment
+        fields = ('content',)

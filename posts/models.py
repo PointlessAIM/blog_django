@@ -23,6 +23,27 @@ class Post(models.Model):
     def __str__(self) -> str:
         return self.title
     
+    def get_absolute_url(self):
+        return reverse("posts:detail", kwargs={"slug": self.slug})
+    
+    def get_like_url(self):
+        return reverse("posts:like", kwargs={"slug": self.slug})
+    
+    @property
+    def comments(self):
+        return self.comment_set.all().order_by('-timestamp')
+    @property
+    def get_comment(self):
+        return self.comment_set.all().count()
+
+    @property
+    def get_like(self):
+        return self.like_set.all().count()
+    
+    @property
+    def get_view(self):
+        return self.postview_set.all().count()
+    
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
