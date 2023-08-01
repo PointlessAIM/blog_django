@@ -1,6 +1,17 @@
 {%extends 'base.html'%}
 {%load crispy_forms_tags%}
 {%block content%}
+
+{% if messages %}
+    <ul class="messages">
+    {% for message in messages %}
+        <div class="alert alert-primary" role="alert">
+            <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+        </div>
+    {% endfor %}
+    </ul>    
+{% endif %}
+
 <div class="row">
     <div class="col-4 offset-4">
         <div class="card" style="padding: 10px;">
